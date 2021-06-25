@@ -114,8 +114,9 @@ while True:
 						continue
 			
 			if status[name]['traded'] == 'yes' and ((status[name]['target_order'] is not None) or (status[name]['sl_order'] is not None)):
+				pdb.set_trace()
 				sl_order_details = kite.order_history(order_id = status[name]['sl_order'])[-1]
-				target_order_details = kite.order_history(order_id = status[name]['sl_order'])[-1]
+				target_order_details = kite.order_history(order_id = status[name]['target_order'])[-1]
 				if sl_order_details['status'] == 'COMPLETE':
 					#cancel[target_order]
 					try:
