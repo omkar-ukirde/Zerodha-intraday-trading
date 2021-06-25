@@ -29,8 +29,8 @@ print('Getting in')
 
 
 while True:
-	print("going for round 1")
-	print(f"{datetime.datetime.now()}")
+	#print("going for round 1")
+	#print(f"{datetime.datetime.now()}")
 	try:
 		for name in watchlist:
 			df15, dfday = sp.get_live_date(name)
