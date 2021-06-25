@@ -80,7 +80,7 @@ while True:
 				if (parent_order_details['status'] == 'COMPLETE') and (status[name]['buy_sell'] == 'buy'):    
 					try:
 						sl_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SLM, price=None, validity=None, disclosed_quantity=None, trigger_price=status[name]['sl'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
-						status[name]['sl_order'] = 'sl_order'
+						status[name]['sl_order'] = sl_order
 					except Exception as e:
 						print(f"Error in Buy SL {e}")
 						continue
@@ -88,7 +88,7 @@ while True:
 				if (parent_order_details['status'] == 'COMPLETE') and (status[name]['buy_sell'] == 'sell'):    
 					try:
 						sl_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SLM, price=None, validity=None, disclosed_quantity=None, trigger_price=status[name]['sl'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
-						status[name]['sl_order'] = 'sl_order'
+						status[name]['sl_order'] = sl_order
 					except Exception as e:
 						print(f"Error in Sell SL {e}")
 						continue
@@ -99,7 +99,7 @@ while True:
 				if (parent_order_details['status'] == 'COMPLETE') and (status[name]['buy_sell'] == 'buy'):    
 					try:
 						target_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_LIMIT, price=status[name]['target'], validity=None, disclosed_quantity=None, trigger_price= None, squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
-						status[name]['target_order'] = 'target_order'
+						status[name]['target_order'] = target_order
 					except Exception as e:
 						print(f"Error in buy target {e}")
 						continue
@@ -107,7 +107,7 @@ while True:
 				if (parent_order_details['status'] == 'COMPLETE') and (status[name]['buy_sell'] == 'sell'):    
 					try:
 						target_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_LIMIT, price=status[name]['target'], validity=None, disclosed_quantity=None, trigger_price= None, squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
-						status[name]['target_order'] = 'target_order'
+						status[name]['target_order'] = target_order
 
 					except Exception as e:
 						print(f"Error in Sell target {e}")
