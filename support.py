@@ -46,10 +46,12 @@ def check_entry(df15, name, dfday, completed_candle):
 	try:
 		#buy condition
 		row = df15.loc[completed_candle]
-		quote = kite.quote(['NSE:'+name])
-		buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close']) and (quote['NSE:'+name]['buy_quantity'] > quote['NSE:'+name]['sell_quantity'])
+		#quote = kite.quote(['NSE:'+name])
+		#buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close']) and (quote['NSE:'+name]['buy_quantity'] > quote['NSE:'+name]['sell_quantity'])
+		buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close'])
 		#sell condition
-		sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close']) and (quote['NSE:'+name]['buy_quantity'] < quote['NSE:'+name]['sell_quantity'])
+		#sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close']) and (quote['NSE:'+name]['buy_quantity'] < quote['NSE:'+name]['sell_quantity'])
+		sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close'])
 		return buy_condition, sell_condition
 	except Exception as e:
 		print(f"error in check_entry {e}")

@@ -3,19 +3,19 @@ import pandas as pd
 import datetime
 import sys
 import pdb
+from nsetools import Nse
+
+nse = Nse()
+kite = sp.kite
 
 total_trade = 0
-kite = sp.kite
-#https://www1.nseindia.com/content/indices/ind_Nifty100_Liquid15.csv
-#https://www1.nseindia.com/content/indices/ind_Nifty_Midcap_Liquid15.csv
-#https://www1.nseindia.com/content/indices/ind_nifty200Momentum30_list.csv
-#https://www1.nseindia.com/content/indices/ind_nifty50list.csv
-#https://www1.nseindia.com/content/indices/ind_nifty100list.csv
-#https://www1.nseindia.com/content/indices/ind_nifty200list.csv
-df20 = pd.read_csv('https://www1.nseindia.com/content/indices/ind_nifty200Momentum30_list.csv')
-df20['nse'] = 'NSE:' + df20['Symbol']
-watchlist = df20['Symbol'].tolist()
 risk_per_trade = 100
+
+top_gainers = nse.get_top_gainers()
+top_losers = nse.get_top_losers()
+tempgainers = pd.DataFrame(top_gainers)['symbol'].to_list()
+templosers = pd.DataFrame(top_losers)['symbol'].to_list()
+watchlist = tempgainers + templosers
 
 temp = {'name':None, 'entry_price': None, 'buy_sell': None, 'qty': None, 'sl': None, 'traded':None, 'parent_order': None, 'sl_order':None, 'target':None, 'target_order': None}
 status = {name: temp.copy() for name in watchlist}
