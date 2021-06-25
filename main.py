@@ -11,6 +11,13 @@ kite = sp.kite
 total_trade = 0
 risk_per_trade = 100
 
+print("Waiting for market to open")
+dtime = datetime.datetime.now()
+while dtime.time() < datetime.time(9, 30):
+	dtime = datetime.datetime.now()
+print('Getting in')
+
+
 top_gainers = nse.get_top_gainers()
 top_losers = nse.get_top_losers()
 tempgainers = pd.DataFrame(top_gainers)['symbol'].to_list()
@@ -21,11 +28,6 @@ temp = {'name':None, 'entry_price': None, 'buy_sell': None, 'qty': None, 'sl': N
 status = {name: temp.copy() for name in watchlist}
 
 
-print("Waiting for market to open")
-dtime = datetime.datetime.now()
-while dtime.time() < datetime.time(9, 30):
-	dtime = datetime.datetime.now()
-print('Getting in')
 
 
 while True:
