@@ -120,7 +120,16 @@ while True:
 					#cancel[target_order]
 					try:
 						kite.cancel_order(variety=target_order_details['variety'], order_id=target_order_details['order_id'])
-						status[name]['name']= None, status[name]['entry_price']= None, status[name]['buy_sell']= None, status[name]['qty']= None, status[name]['sl']= None, status[name]['traded']= None, status[name]['parent_order']= None, status[name]['sl_order']= None, status[name]['target']= None, status[name]['target_order']= None
+						status[name]['name']= None 
+						status[name]['entry_price']= None 
+						status[name]['buy_sell']= None 
+						status[name]['qty']= None
+						status[name]['sl']= None 
+						status[name]['traded']= None 
+						status[name]['parent_order']= None 
+						status[name]['sl_order']= None 
+						status[name]['target']= None 
+						status[name]['target_order']= None
 					except Exception as e:
 						print(f'Error in cancelling target order {e} for name {name}')
 						pass
@@ -128,7 +137,16 @@ while True:
 					#cancel[sl]
 					try:
 						kite.cancel_order(variety=sl_order_details['variety'], order_id=sl_order_details['order_id'])
-						status[name]['name']= None, status[name]['entry_price']= None, status[name]['buy_sell']= None, status[name]['qty']= None, status[name]['sl']= None, status[name]['traded']= None, status[name]['parent_order']= None, status[name]['sl_order']= None, status[name]['target']= None, status[name]['target_order']= None
+						status[name]['name']= None
+						status[name]['entry_price']= None 
+						status[name]['buy_sell']= None 
+						status[name]['qty']= None 
+						status[name]['sl']= None 
+						status[name]['traded']= None 
+						status[name]['parent_order']= None 
+						status[name]['sl_order']= None 
+						status[name]['target']= None 
+						status[name]['target_order']= None
 					except Exception as e:
 						print(f'Error in cancelling sl order {e} for name {name}')
 						pass
