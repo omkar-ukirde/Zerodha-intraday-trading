@@ -54,13 +54,13 @@ def check_entry(df15, name, dfday, completed_candle, ctime):
 		row = df15.loc[completed_candle]
 		#quote = kite.quote(['NSE:'+name])
 		#buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close']) and (quote['NSE:'+name]['buy_quantity'] > quote['NSE:'+name]['sell_quantity'])
-		#buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close']) and ctime.time() < datetime.time(11, 31)
-		buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close'])
+		buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close']) and ctime.time() < datetime.time(2, 50)
+		#buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close'])
 		#sell condition
 		#sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close']) and (quote['NSE:'+name]['buy_quantity'] < quote['NSE:'+name]['sell_quantity'])
-		#sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close']) and ctime.time() > datetime.time(11, 15) 
+		sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close']) and ctime.time() > datetime.time(2, 50) 
 		#sell_condition = False
-		sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close'])
+		#sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close'])
 		return buy_condition, sell_condition
 	except Exception as e:
 		print(f"error in check_entry {e}")
