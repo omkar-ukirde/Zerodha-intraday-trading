@@ -176,7 +176,7 @@ while True:
 
 
 			#Exit if 3:15			
-			if ctime.time() > datetime.time(15, 15):
+			if ctime.time() > datetime.time(15, 18):
 				sp.exit_funct()
 				print("Exiting Now\nGood Day")
 				sys.exit()			
