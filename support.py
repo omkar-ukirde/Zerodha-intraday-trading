@@ -117,6 +117,7 @@ def get_stocks(url):
         row = [tr.text for tr in td]
         lo.append(row)
     df = pd.DataFrame(lo, columns=["Name", "symbol", "Sector","Current Price","Trending for Days","Average Volume in thousands"])
+    df = df[1:17]
     watchlist = df['symbol'].to_list()
     for val in watchlist:
         if val != None :

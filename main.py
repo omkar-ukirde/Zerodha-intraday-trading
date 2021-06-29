@@ -13,11 +13,11 @@ risk_per_trade = 100
 total_trade = 0
 
 url1 = "https://www.topstockresearch.com/StockDailyTrending/FNOStockDailyClosingHigher.html"
-url2 = "https://www.topstockresearch.com/StockDailyTrending/FNOStockDailyClosingLower.html"
-gain = sp.get_stocks(url=url1)
-loss = sp.get_stocks(url=url2)
-watchlist = gain+loss
-
+#url2 = "https://www.topstockresearch.com/StockDailyTrending/FNOStockDailyClosingLower.html"
+watchlist = sp.get_stocks(url=url1)
+#loss = sp.get_stocks(url=url2)
+#watchlist = gain+loss
+print(watchlist)
 
 print("Waiting for market to open")
 dtime = datetime.datetime.now()
