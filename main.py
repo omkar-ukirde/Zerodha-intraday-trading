@@ -10,7 +10,7 @@ kite = sp.kite
 
 total_trade = 0
 risk_per_trade = 100
-
+total_trade = 0
 
 url1 = "https://www.topstockresearch.com/StockDailyTrending/FNOStockDailyClosingHigher.html"
 url2 = "https://www.topstockresearch.com/StockDailyTrending/FNOStockDailyClosingLower.html"
@@ -45,7 +45,7 @@ while True:
 			buy_condition, sell_condition = sp.check_entry(df15, name, dfday, completed_candle, ctime)
 			row = df15.loc[completed_candle]
 			# Buy Entry
-			if (buy_condition) and (status[name]['traded'] is None):
+			if (buy_condition) and (status[name]['traded'] is None) and (total_trade <= 4):
 				
 				try:
 					status[name]['name'] = name
@@ -67,11 +67,12 @@ while True:
 						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_LIMIT, price=status[name]['entry_price'] + 0.05, validity=None, disclosed_quantity=None, trigger_price=None, squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
 						status[name]['parent_order'] = parent_order
 						status[name]['traded'] = 'yes'
+						total_trade = total_trade + 1
 				except Exception as e:
 					print(f"Error in buy {e}")
 					continue
 			# Sell Entry
-			if (sell_condition) and (status[name]['traded'] is None):
+			if (sell_condition) and (status[name]['traded'] is None) and (total_trade <= 4):
 				try:
 					status[name]['name'] = name
 					status[name]['entry_price'] = row['low']
@@ -91,6 +92,7 @@ while True:
 						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_LIMIT, price=status[name]['entry_price'] - 0.05, validity=None, disclosed_quantity=None, trigger_price=None, squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
 						status[name]['parent_order'] = parent_order
 						status[name]['traded'] = 'yes'
+						total_trade = total_trade + 1
 				except Exception as e:
 					print(f"Error in sell {e}")
 					continue    
