@@ -59,7 +59,7 @@ while True:
 					ltp = kite.ltp(['NSE:'+name])['NSE:'+name]['last_price']
 					if ltp < row['high']:
 						print(f"Buy {name}:SL, Entry = {row['high']} sl= {row['low']} tgt= {status[name]['target']}, ltp:{ltp}")
-						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SL, price=status[name]['entry_price'] + 0.05, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
+						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SLM, price=None, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
 						status[name]['parent_order'] = parent_order
 						status[name]['traded'] = 'yes'
 					else:
@@ -85,7 +85,7 @@ while True:
 					ltp = kite.ltp(['NSE:'+name])['NSE:'+name]['last_price']
 					if ltp > row['low']:
 						print(f"SELL {name}:SL, Entry = {row['low']} sl= {row['high']} tgt= {status[name]['target']}, ltp={ltp}")						
-						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SL, price=status[name]['entry_price'] - 0.05, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
+						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SLM, price=None, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
 						status[name]['parent_order'] = parent_order
 						status[name]['traded'] = 'yes'
 					else:
