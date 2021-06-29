@@ -2,8 +2,14 @@ import zrd_login
 import datetime
 import pandas as pd
 import pdb
+import requests
+from bs4 import BeautifulSoup
+
+
 
 kite = zrd_login.kite
+
+
 
 def get_data(name, segment, delta, interval):
 	try:
@@ -42,15 +48,18 @@ def get_live_date(name):
 		print(f"get_live_date {e}")
 		raise
 
-def check_entry(df15, name, dfday, completed_candle):
+def check_entry(df15, name, dfday, completed_candle, ctime):
 	try:
 		#buy condition
 		row = df15.loc[completed_candle]
 		#quote = kite.quote(['NSE:'+name])
 		#buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close']) and (quote['NSE:'+name]['buy_quantity'] > quote['NSE:'+name]['sell_quantity'])
+		#buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close']) and ctime.time() < datetime.time(11, 31)
 		buy_condition = (row['open'] < dfday['pre_high'][-1] < row['close'])
 		#sell condition
 		#sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close']) and (quote['NSE:'+name]['buy_quantity'] < quote['NSE:'+name]['sell_quantity'])
+		#sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close']) and ctime.time() > datetime.time(11, 15) 
+		#sell_condition = False
 		sell_condition = (row['open'] > dfday['pre_low'][-1] > row['close'])
 		return buy_condition, sell_condition
 	except Exception as e:
@@ -94,3 +103,22 @@ def exit_funct():
 	        quantity = abs(pos_df["quantity"].values[i])
 	        placeMarketOrder(ticker,"buy", quantity)						
 	print("All Open Positions are closed")        
+
+def get_stocks(url):
+    res = []
+    response = requests.get(url, headers={'User-Agent': 'Custom'})
+    response.raise_for_status()
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find("table",{"class":"table table-bordered table-striped table-hover"})    
+    table_rows = table.find_all('tr')
+    lo = []
+    for tr in table_rows:
+        td = tr.find_all('td')
+        row = [tr.text for tr in td]
+        lo.append(row)
+    df = pd.DataFrame(lo, columns=["Name", "symbol", "Sector","Current Price","Trending for Days","Average Volume in thousands"])
+    watchlist = df['symbol'].to_list()
+    for val in watchlist:
+        if val != None :
+            res.append(val)    
+    return res
