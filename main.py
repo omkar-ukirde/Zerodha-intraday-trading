@@ -9,7 +9,7 @@ nse = Nse()
 kite = sp.kite
 
 total_trade = 0
-risk_per_trade = 100
+risk_per_trade = 200
 total_trade = 0
 
 url1 = "https://www.topstockresearch.com/StockDailyTrending/FNOStockDailyClosingHigher.html"
@@ -45,7 +45,7 @@ while True:
 			buy_condition, sell_condition = sp.check_entry(df15, name, dfday, completed_candle, ctime)
 			row = df15.loc[completed_candle]
 			# Buy Entry
-			if (buy_condition) and (status[name]['traded'] is None) and (total_trade <= 4):
+			if (buy_condition) and (status[name]['traded'] is None):# and (total_trade <= 4):
 				
 				try:
 					status[name]['name'] = name
@@ -62,7 +62,7 @@ while True:
 					parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SLM, price=None, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
 					status[name]['parent_order'] = parent_order
 					status[name]['traded'] = 'yes'
-					total_trade = total_trade + 1
+					#total_trade = total_trade + 1
 					#else:
 					#	pass
 					#	print(f"Buy {name}:LMT, Entry = {row['high']} sl= {row['low']} tgt= {status[name]['target']}, ltp={ltp}")	
@@ -74,7 +74,7 @@ while True:
 					print(f"Error in buy {e}")
 					continue
 			# Sell Entry
-			if (sell_condition) and (status[name]['traded'] is None) and (total_trade <= 4):
+			if (sell_condition) and (status[name]['traded'] is None):# and (total_trade <= 4):
 				try:
 					status[name]['name'] = name
 					status[name]['entry_price'] = row['low']
@@ -89,7 +89,7 @@ while True:
 					parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SLM, price=None, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
 					status[name]['parent_order'] = parent_order
 					status[name]['traded'] = 'yes'
-					total_trade = total_trade + 1
+					#total_trade = total_trade + 1
 					#else:
 					#	pass	
 					#	print(f"SELL {name}:LMT, Entry = {row['low']} sl= {row['high']} tgt= {status[name]['target']}, ltp={ltp}")							
