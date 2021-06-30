@@ -9,7 +9,7 @@ nse = Nse()
 kite = sp.kite
 
 total_trade = 0
-risk_per_trade = 200
+risk_per_trade = 400
 total_trade = 0
 
 url1 = "https://www.topstockresearch.com/StockDailyTrending/FNOStockDailyClosingHigher.html"
@@ -29,9 +29,6 @@ print('Getting in')
 
 temp = {'name':None, 'entry_price': None, 'buy_sell': None, 'qty': None, 'sl': None, 'traded':None, 'parent_order': None, 'sl_order':None, 'target':None, 'target_order': None}
 status = {name: temp.copy() for name in watchlist}
-
-
-
 
 while True:
 	#print("going for round 1")
@@ -56,19 +53,19 @@ while True:
 					#status[name]['qty'] = 1
 					status[name]['qty'] = int(risk_per_trade//(row['high'] - row['low']))
 					print(f"Buy {name}, Entry = {row['high']} sl= {row['low']} tgt= {status[name]['target']}")
-					#ltp = kite.ltp(['NSE:'+name])['NSE:'+name]['last_price']
-					#if ltp < row['high']:
-					print(f"Buy {name}:SL, Entry = {row['high']} sl= {row['low']} tgt= {status[name]['target']}, ltp:{ltp}")
-					parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SLM, price=None, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
-					status[name]['parent_order'] = parent_order
-					status[name]['traded'] = 'yes'
+					ltp = kite.ltp(['NSE:'+name])['NSE:'+name]['last_price']
+					if ltp < row['high']:
+						print(f"Buy {name}:SL, Entry = {row['high']} sl= {row['low']} tgt= {status[name]['target']}, ltp:{ltp}")
+						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SL, price=status[name]['entry_price']+0.10, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
+						status[name]['parent_order'] = parent_order
+						status[name]['traded'] = 'yes'
 					#total_trade = total_trade + 1
-					#else:
+					else:
 					#	pass
-					#	print(f"Buy {name}:LMT, Entry = {row['high']} sl= {row['low']} tgt= {status[name]['target']}, ltp={ltp}")	
-					#	parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_LIMIT, price=status[name]['entry_price'] + 0.05, validity=None, disclosed_quantity=None, trigger_price=None, squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
-					#	status[name]['parent_order'] = parent_order
-					#	status[name]['traded'] = 'yes'
+						print(f"Buy {name}:Market, Entry = {row['high']} sl= {row['low']} tgt= {status[name]['target']}, ltp={ltp}")	
+						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_BUY, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_MARKET, price=None, validity=None, disclosed_quantity=None, trigger_price=None, squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
+						status[name]['parent_order'] = parent_order
+						status[name]['traded'] = 'yes'
 					#	total_trade = total_trade + 1
 				except Exception as e:
 					print(f"Error in buy {e}")
@@ -83,19 +80,19 @@ while True:
 					status[name]['sl'] = row['high']
 					#status[name]['qty'] = 1
 					status[name]['qty'] = int(risk_per_trade//(row['high'] - row['low']))
-					#ltp = kite.ltp(['NSE:'+name])['NSE:'+name]['last_price']
-					#if ltp > row['low']:
-					print(f"SELL {name}:SL, Entry = {row['low']} sl= {row['high']} tgt= {status[name]['target']}, ltp={ltp}")						
-					parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SLM, price=None, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
-					status[name]['parent_order'] = parent_order
-					status[name]['traded'] = 'yes'
+					ltp = kite.ltp(['NSE:'+name])['NSE:'+name]['last_price']
+					if ltp > row['low']:
+						print(f"SELL {name}:SL, Entry = {row['low']} sl= {row['high']} tgt= {status[name]['target']}, ltp={ltp}")						
+						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_SL, price=status[name]['entry_price']-0.10, validity=None, disclosed_quantity=None, trigger_price=status[name]['entry_price'], squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
+						status[name]['parent_order'] = parent_order
+						status[name]['traded'] = 'yes'
 					#total_trade = total_trade + 1
-					#else:
+					else:
 					#	pass	
-					#	print(f"SELL {name}:LMT, Entry = {row['low']} sl= {row['high']} tgt= {status[name]['target']}, ltp={ltp}")							
-					#	parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_LIMIT, price=status[name]['entry_price'] - 0.05, validity=None, disclosed_quantity=None, trigger_price=None, squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
-					#	status[name]['parent_order'] = parent_order
-					#	status[name]['traded'] = 'yes'
+						print(f"SELL {name}:Market, Entry = {row['low']} sl= {row['high']} tgt= {status[name]['target']}, ltp={ltp}")							
+						parent_order = kite.place_order(variety = kite.VARIETY_REGULAR, exchange = kite.EXCHANGE_NSE, tradingsymbol = name, transaction_type = kite.TRANSACTION_TYPE_SELL, quantity= status[name]['qty'], product = kite.PRODUCT_MIS, order_type = kite.ORDER_TYPE_MARKET, price=None, validity=None, disclosed_quantity=None, trigger_price=None, squareoff=None, stoploss=None, trailing_stoploss=None, tag=None)
+						status[name]['parent_order'] = parent_order
+						status[name]['traded'] = 'yes'
 					#	total_trade = total_trade + 1
 				except Exception as e:
 					print(f"Error in sell {e}")
