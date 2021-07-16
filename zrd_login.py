@@ -6,8 +6,8 @@ import datetime
 import os
 
 
-api_k = "tkf3f1m8xj3k9rta"  # api_key
-api_s = "6mws34cn8hvy4s181xg383kvw2091d0s"  # api_secret
+api_k = ""  # api_key
+api_s = ""  # api_secret
 filename = str(datetime.datetime.now().date()) + ' token' + '.txt'
 
 
